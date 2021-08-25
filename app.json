@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "dressMe",
+    "slug": "dressMe",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "dressMe"
+}

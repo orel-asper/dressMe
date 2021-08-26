@@ -24,8 +24,8 @@ const UseImage = ({ type }) => {
 
     return (
         <>
-            <Image style={styles.img}
-                source={require(pants)} />
+            {/* <Image style={styles.img}
+                source={require(pants)} /> */}
         </>
     )
 }

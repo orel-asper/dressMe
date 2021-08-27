@@ -4,7 +4,7 @@ import GetMeData from '../service/GetMeData'
 
 const Pants = ({navigation}) => {
     return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <View style={{ flex: 1}}>
             <GetMeData type={'pants'}/>
       </View>
     )

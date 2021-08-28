@@ -9,6 +9,7 @@ import {
   set_remembered_pants,
   set_remembered_shirts,
   set_remembered_shoes,
+  set_show_finished_btn,
 } from "../../redux/store";
 
 const RandomImg = (type) => {
@@ -44,8 +45,8 @@ const navigateType = (type) => {
       return "Pants";
     case "pants":
       return "Shoes";
-    case "shoes":
-      return "Dress Me";
+    // case "shoes":
+    //   return "Dress Me";
     default:
       return;
   }
@@ -53,6 +54,8 @@ const navigateType = (type) => {
 
 export default Items = ({ itm }) => {
   const { brand, colors, id, name, sizes, type } = itm,
+    memoizedState = useSelector((state) => state.myStateIsRemembered),
+    { rememberMyPants, rememberMyShoes, rememberMyShirts } = memoizedState,
     selectedSize = useSelector((state) => state.normalState.selectedSize),
     [selectedColor, setSelectedColor] = useState(),
     [visible, setVisible] = React.useState(false),
@@ -75,6 +78,13 @@ export default Items = ({ itm }) => {
         };
         dispatch(dispatchType(type, body));
         dispatch(set_navigation(navigateType(type)));
+      }
+      if (
+        rememberMyPants.brand &&
+        rememberMyShoes.brand &&
+        rememberMyShirts.brand
+      ) {
+        dispatch(set_show_finished_btn(true));
       }
     };
   useEffect(() => {

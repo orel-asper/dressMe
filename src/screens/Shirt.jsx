@@ -1,15 +1,56 @@
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import GetMeData from '../service/GetMeData'
+import React, { useState, useEffect } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
+import GetMeData from "../service/GetMeData";
+import { Button } from "react-native-paper";
+import {
+  set_remembered_sets,
+  set_clear_remembered,
+  set_show_finished_btn,
+} from "../../redux/store";
 
-const Shirt = ({navigation}) => {
-    return (
-        <View style={{ flex: 1 }}>
-            <GetMeData type={'shirts'}/>
-      </View>
-    )
-}
+const Shirt = ({ navigation }) => {
+  const memoizedState = useSelector((state) => state.myStateIsRemembered),
+    showBtn = useSelector((state) => state.normalState.showBtn),
+    { rememberMyPants, rememberMyShoes, rememberMyShirts } = memoizedState,
+    allData = memoizedState.rememberMySets,
+    dispatch = useDispatch();
 
-export default Shirt
+  return (
+    <View style={{ flex: 1 }}>
+      <GetMeData type={"shirts"} />
+      {showBtn ? (
+        <Button
+          style={styles.btnsLong}
+          mode="contained"
+          onPress={() => {
+            dispatch(
+              set_remembered_sets(...allData, [
+                rememberMyPants,
+                rememberMyShoes,
+                rememberMyShirts,
+              ])
+            );
+            dispatch(set_clear_remembered([]));
+            dispatch(set_show_finished_btn(false));
+            navigation.navigate("Dress Me");
+          }}
+        >
+          Finish Shopping
+        </Button>
+      ) : null}
+    </View>
+  );
+};
 
-const styles = StyleSheet.create({})
+export default Shirt;
+
+const styles = StyleSheet.create({
+  btnsLong: {
+    margin: 5,
+    justifyContent: "center",
+    alignSelf: "center",
+    width: "70%",
+    height: "6%",
+  },
+});

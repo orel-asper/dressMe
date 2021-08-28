@@ -7,6 +7,7 @@ import "core-js/fn/symbol/iterator";
 let normaState = {
     selectedSize: "",
     navigate: "",
+    showBtn: false,
   },
   memoizedState = {
     rememberMyShirts: [],
@@ -21,7 +22,8 @@ let normaState = {
   SET_REMEMBERED_SHOES = "SET_REMEMBERED_SHOES",
   SET_REMEMBERED_SETS = "SET_REMEMBERED_SETS",
   SET_CLEAR_REMEMBERED = "SET_CLEAR_REMEMBERED",
-  SET_CLEAR_ALL = "SET_CLEAR_ALL";
+  SET_CLEAR_ALL = "SET_CLEAR_ALL",
+  SET_SHOW_FINISHED_BTN = "SET_SHOW_FINISHED_BTN";
 
 const myStateIsRemembered = (state = memoizedState, { type, payload }) => {
   switch (type) {
@@ -47,13 +49,14 @@ const myStateIsRemembered = (state = memoizedState, { type, payload }) => {
       };
     case SET_CLEAR_REMEMBERED:
       return {
-        rememberMyShirts: [],
-        rememberMyPants: [],
-        rememberMyShoes: [],
+        ...state,
+        rememberMyShirts: payload,
+        rememberMyPants: payload,
+        rememberMyShoes: payload,
       };
     case SET_CLEAR_ALL:
       return {
-        rememberMySets: [],
+        rememberMySets: payload,
       };
     default:
       return state;
@@ -71,6 +74,11 @@ const normalState = (state = normaState, { type, payload }) => {
       return {
         ...state,
         navigate: payload,
+      };
+    case SET_SHOW_FINISHED_BTN:
+      return {
+        ...state,
+        showBtn: payload,
       };
     default:
       return state;
@@ -102,6 +110,10 @@ export const set_selected_size = (value) => ({
 });
 export const set_navigation = (value) => ({
   type: SET_NAVIGATION,
+  payload: value,
+});
+export const set_show_finished_btn = (value) => ({
+  type: SET_SHOW_FINISHED_BTN,
   payload: value,
 });
 //RememberME

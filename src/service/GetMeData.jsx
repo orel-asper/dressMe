@@ -55,7 +55,7 @@ export default GetMeData = ({ type }) => {
   return (
     <View style={{ flex: 1, padding: 24 }}>
       {isLoading ? (
-        <ProgressBar progress={0.5} color={Colors.red800} />
+        <ProgressBar progress={1} color={Colors.red800} />
       ) : (
         <>
           <FlatList

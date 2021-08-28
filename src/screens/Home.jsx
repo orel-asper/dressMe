@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -9,11 +9,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { Button, Card, Badge, List } from "react-native-paper";
 import UseImage from "../hooks/useImage";
-import {
-  set_clear_all,
-  set_clear_remembered,
-  set_remembered_sets,
-} from "../../redux/store";
+import { set_clear_all } from "../../redux/store";
 
 const Items = ({ itm }) => {
   const { brand, colors, id, name, sizes, type, rndImg } = itm;
@@ -42,18 +38,10 @@ const Items = ({ itm }) => {
 const Home = React.memo(({ navigation }) => {
   const memoizedState = useSelector((state) => state.myStateIsRemembered),
     nav = useSelector((state) => state.normalState.navigate),
+    allData = memoizedState.rememberMySets,
     dispatch = useDispatch();
-  let data = [
-      memoizedState.rememberMyShirts,
-      memoizedState.rememberMyPants,
-      memoizedState.rememberMyShoes,
-    ],
-    allData = memoizedState.rememberMySets;
 
-  useLayoutEffect(() => {
-    dispatch(set_remembered_sets([...allData, data]));
-    // dispatch(set_clear_remembered());
-  }, []);
+  // console.log(memoizedState);
 
   useEffect(() => {
     if (!nav) return;
@@ -62,40 +50,40 @@ const Home = React.memo(({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Button mode="contained" onPress={() => navigation.navigate("Shirt")}>
+      <Button
+        style={styles.btnsLong}
+        mode="contained"
+        onPress={() => navigation.navigate("Shirt")}
+      >
         start building your outfit
       </Button>
       <Card.Title title="latest items" />
       <ScrollView style={{ width: "100%", height: "90%" }}>
         <List.Section title="your sets">
-          {allData
-            ? allData.map((data, i) => (
-                <View key={i}>
-                  <List.Accordion
-                    title="set"
-                    left={(props) => <List.Icon {...props} icon="folder" />}
-                  >
-                    <View style={{ width: "100%", height: "78%" }}>
-                      <FlatList
-                        data={data}
-                        keyExtractor={({ id }, index) => id}
-                        renderItem={({ item }) => <Items itm={item} />}
-                      />
-                      <Button
-                        style={styles.btns}
-                        mode="contained"
-                        onPress={() => {}}
-                      >
-                        Share
-                      </Button>
-                    </View>
-                  </List.Accordion>
-                </View>
-              ))
-            : null}
+          {allData.length ? (
+            <List.Accordion
+              title="set"
+              left={(props) => <List.Icon {...props} icon="folder" />}
+            >
+              <View style={{ width: "100%", height: "78%" }}>
+                <FlatList
+                  data={allData}
+                  keyExtractor={({ id }, index) => id}
+                  renderItem={({ item }) => <Items itm={item} />}
+                />
+                <Button style={styles.btns} mode="contained" onPress={() => {}}>
+                  Share
+                </Button>
+              </View>
+            </List.Accordion>
+          ) : null}
         </List.Section>
       </ScrollView>
-      <Button mode="contained" onPress={() => dispatch(set_clear_all())}>
+      <Button
+        style={styles.btnsLong}
+        mode="contained"
+        onPress={() => dispatch(set_clear_all([]))}
+      >
         clear data
       </Button>
     </View>
@@ -121,6 +109,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignSelf: "center",
     width: "30%",
+    height: "6%",
+  },
+  btnsLong: {
+    margin: 5,
+    justifyContent: "center",
+    alignSelf: "center",
+    width: "70%",
     height: "6%",
   },
   cards: {

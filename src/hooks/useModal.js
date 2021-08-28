@@ -5,7 +5,7 @@ import { Modal, Portal, Text, Button, RadioButton } from "react-native-paper";
 import { set_selected_size } from "../../redux/store";
 
 const GetModal = ({ visible, hideModal, sizes }) => {
-  const [checked, setChecked] = useState(0),
+  const [checked, setChecked] = useState(),
     [btns, setBtns] = useState(""),
     containerStyle = { backgroundColor: "white", padding: 20 },
     dispatch = useDispatch(),
@@ -30,7 +30,8 @@ const GetModal = ({ visible, hideModal, sizes }) => {
                 value={i}
                 status={checked === i ? "checked" : "unchecked"}
                 onPress={() => {
-                  setChecked(i), setBtns(size);
+                  setChecked(i);
+                  setBtns(size);
                 }}
               />
             </View>

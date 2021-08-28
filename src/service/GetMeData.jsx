@@ -3,8 +3,6 @@ import { FlatList, View, StyleSheet } from "react-native";
 import { ProgressBar, Colors } from "react-native-paper";
 import Items from "../screens/Items";
 
-//  {"brand": "abc", "colors": ["blue", "pink"], "id": 3674, "name": "sr_dsa", "sizes": ["s", "xl"], "type": "shirt"}
-
 export default GetMeData = ({ type }) => {
   const [isLoading, setLoading] = useState(true),
     [shoes, setShoes] = useState([]),
@@ -62,7 +60,7 @@ export default GetMeData = ({ type }) => {
         <>
           <FlatList
             data={typeChanger(type)}
-            keyExtractor={({ id }, index) => id.toString()}
+            keyExtractor={({ id }, index) => id.toString() + index}
             renderItem={({ item }) => <Items itm={item} />}
           />
         </>

@@ -5,7 +5,7 @@ import { Button, Card, Badge } from "react-native-paper";
 import UseImage from "../hooks/useImage";
 import GetModal from "../hooks/useModal";
 import {
-  set_remembered_clothes,
+  set_navigation,
   set_remembered_pants,
   set_remembered_shirts,
   set_remembered_shoes,
@@ -38,10 +38,22 @@ const dispatchType = (type, body) => {
   }
 };
 
+const navigateType = (type) => {
+  switch (type) {
+    case "shirt":
+      return "Pants";
+    case "pants":
+      return "Shoes";
+    case "shoes":
+      return "Dress Me";
+    default:
+      return;
+  }
+};
+
 export default Items = ({ itm }) => {
   const { brand, colors, id, name, sizes, type } = itm,
     selectedSize = useSelector((state) => state.normalState.selectedSize),
-    memoizedState = useSelector((state) => state.memoizedState),
     [selectedColor, setSelectedColor] = useState(),
     [visible, setVisible] = React.useState(false),
     [rndImg, setRndImg] = useState(),
@@ -53,17 +65,18 @@ export default Items = ({ itm }) => {
         Alert.alert("Ops.. you missed some part please choose the missing");
       else {
         const body = {
-          selectedColor,
-          rndImg,
-          id,
           brand,
+          colors: selectedColor,
+          id,
           name,
-          selectedSize,
+          sizes: selectedSize,
+          rndImg,
+          type,
         };
         dispatch(dispatchType(type, body));
+        dispatch(set_navigation(navigateType(type)));
       }
     };
-  console.log(memoizedState, "memoizedState");
   useEffect(() => {
     setRndImg(RandomImg(type));
   }, []);
@@ -78,7 +91,7 @@ export default Items = ({ itm }) => {
         <View style={styles.flexView}>
           {colors.map((color, i) => (
             <TouchableOpacity
-              key={color}
+              key={color + Math.random() * 10}
               onPress={() => setSelectedColor(color)}
               style={[
                 styles.ToucOpacityColor,

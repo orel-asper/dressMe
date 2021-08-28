@@ -1,14 +1,135 @@
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import React, { useState, useEffect, useLayoutEffect } from "react";
+import {
+  StyleSheet,
+  View,
+  FlatList,
+  ScrollView,
+  SafeAreaView,
+} from "react-native";
+import { useSelector, useDispatch } from "react-redux";
+import { Button, Card, Badge, List } from "react-native-paper";
+import UseImage from "../hooks/useImage";
+import {
+  set_clear_all,
+  set_clear_remembered,
+  set_remembered_sets,
+} from "../../redux/store";
 
-const Home = () => {
-    return (
-        <View>
-            <Text>HOOMEEE</Text>
-        </View>
-    )
-}
+const Items = ({ itm }) => {
+  const { brand, colors, id, name, sizes, type, rndImg } = itm;
 
-export default Home
+  return (
+    <>
+      <SafeAreaView style={styles.container}>
+        <ScrollView style={styles.scrollView}>
+          <Card style={styles.cards}>
+            <Card.Title title={brand} subtitle={name} />
+            <Card.Content></Card.Content>
+            <UseImage type={rndImg} />
+            <View style={styles.flexView}>
+              <View style={styles.viewColor}>
+                <Badge style={{ backgroundColor: colors }}></Badge>
+              </View>
+            </View>
+            <Card.Actions></Card.Actions>
+          </Card>
+        </ScrollView>
+      </SafeAreaView>
+    </>
+  );
+};
 
-const styles = StyleSheet.create({})
+const Home = React.memo(({ navigation }) => {
+  const memoizedState = useSelector((state) => state.myStateIsRemembered),
+    nav = useSelector((state) => state.normalState.navigate),
+    dispatch = useDispatch();
+  let data = [
+      memoizedState.rememberMyShirts,
+      memoizedState.rememberMyPants,
+      memoizedState.rememberMyShoes,
+    ],
+    allData = memoizedState.rememberMySets;
+
+  useLayoutEffect(() => {
+    dispatch(set_remembered_sets([...allData, data]));
+    // dispatch(set_clear_remembered());
+  }, []);
+
+  useEffect(() => {
+    if (!nav) return;
+    navigation.navigate(nav);
+  }, [nav]);
+
+  return (
+    <View style={styles.container}>
+      <Button mode="contained" onPress={() => navigation.navigate("Shirt")}>
+        start building your outfit
+      </Button>
+      <Card.Title title="latest items" />
+      <ScrollView style={{ width: "100%", height: "90%" }}>
+        <List.Section title="your sets">
+          {allData
+            ? allData.map((data, i) => (
+                <View key={i}>
+                  <List.Accordion
+                    title="set"
+                    left={(props) => <List.Icon {...props} icon="folder" />}
+                  >
+                    <View style={{ width: "100%", height: "78%" }}>
+                      <FlatList
+                        data={data}
+                        keyExtractor={({ id }, index) => id}
+                        renderItem={({ item }) => <Items itm={item} />}
+                      />
+                      <Button
+                        style={styles.btns}
+                        mode="contained"
+                        onPress={() => {}}
+                      >
+                        Share
+                      </Button>
+                    </View>
+                  </List.Accordion>
+                </View>
+              ))
+            : null}
+        </List.Section>
+      </ScrollView>
+      <Button mode="contained" onPress={() => dispatch(set_clear_all())}>
+        clear data
+      </Button>
+    </View>
+  );
+});
+
+export default Home;
+
+const styles = StyleSheet.create({
+  flexView: {
+    flexDirection: "row",
+    width: "40%",
+  },
+  viewColor: {
+    left: 10,
+    padding: 5,
+    margin: 5,
+    borderRadius: 13,
+    borderColor: "black",
+  },
+  btns: {
+    margin: 5,
+    justifyContent: "center",
+    alignSelf: "center",
+    width: "30%",
+    height: "6%",
+  },
+  cards: {
+    marginBottom: 10,
+  },
+  container: {
+    flex: 1,
+  },
+  scrollView: {
+    marginHorizontal: 20,
+  },
+});

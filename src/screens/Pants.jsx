@@ -3,19 +3,26 @@ import { StyleSheet, Text, View } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import GetMeData from "../service/GetMeData";
 import { Button } from "react-native-paper";
-import {
-  set_remembered_sets,
-  set_clear_remembered,
-  set_show_finished_btn,
-} from "../../redux/store";
+import { set_remembered_sets, set_show_finished_btn } from "../../redux/store";
 
 const Pants = ({ navigation }) => {
   const memoizedState = useSelector((state) => state.myStateIsRemembered),
     showBtn = useSelector((state) => state.normalState.showBtn),
-    { rememberMyPants, rememberMyShoes, rememberMyShirts } = memoizedState,
-    allData = memoizedState.rememberMySets,
+    { rememberMyPants, rememberMyShoes, rememberMyShirts, rememberMySets } =
+      memoizedState,
+    newData = [rememberMyPants, rememberMyShoes, rememberMyShirts],
     dispatch = useDispatch();
 
+  const FinishShopping = async () => {
+    if (typeof newData !== "undefined" && newData.length > 0) {
+      dispatch(set_remembered_sets(rememberMySets.concat(newData)));
+      dispatch(set_show_finished_btn(false));
+      navigation.navigate("Dress Me");
+    }
+  };
+  1;
+
+  console.log(newData);
   return (
     <View style={{ flex: 1 }}>
       <GetMeData type={"pants"} />
@@ -23,18 +30,7 @@ const Pants = ({ navigation }) => {
         <Button
           style={styles.btnsLong}
           mode="contained"
-          onPress={() => {
-            dispatch(
-              set_remembered_sets(...allData, [
-                rememberMyPants,
-                rememberMyShoes,
-                rememberMyShirts,
-              ])
-            );
-            dispatch(set_clear_remembered([]));
-            dispatch(set_show_finished_btn(false));
-            navigation.navigate("Dress Me");
-          }}
+          onPress={FinishShopping}
         >
           Finish Shopping
         </Button>

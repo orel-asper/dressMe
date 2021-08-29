@@ -1,47 +1,44 @@
 import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  View,
-  FlatList,
-  ScrollView,
-  SafeAreaView,
-} from "react-native";
+import { StyleSheet, View, FlatList } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import { Button, Card, Badge, List } from "react-native-paper";
+import {
+  Button,
+  Card,
+  Badge,
+  List,
+  DataTable,
+  Paragraph,
+} from "react-native-paper";
 import UseImage from "../hooks/useImage";
 import { set_clear_all } from "../../redux/store";
 
 const Items = ({ itm }) => {
   const { brand, colors, id, name, sizes, type, rndImg } = itm;
-
   return (
     <>
-      <SafeAreaView style={styles.container}>
-        <ScrollView style={styles.scrollView}>
-          <Card style={styles.cards}>
-            <Card.Title title={brand} subtitle={name} />
-            <Card.Content></Card.Content>
-            <UseImage type={rndImg} />
-            <View style={styles.flexView}>
-              <View style={styles.viewColor}>
-                <Badge style={{ backgroundColor: colors }}></Badge>
-              </View>
-            </View>
-            <Card.Actions></Card.Actions>
-          </Card>
-        </ScrollView>
-      </SafeAreaView>
+      <DataTable>
+        <DataTable.Row>
+          <DataTable.Cell>{brand}</DataTable.Cell>
+          <DataTable.Cell>{name}</DataTable.Cell>
+          <DataTable.Cell>{sizes}</DataTable.Cell>
+          <DataTable.Cell>{colors}</DataTable.Cell>
+          <DataTable.Cell>{rndImg}</DataTable.Cell>
+        </DataTable.Row>
+      </DataTable>
     </>
   );
 };
+
+// {allData.length / 3 ? (
+//   <View style={{ borderBottomColor: "black", borderWidth: 1 }} />
+// ) : null
+// }
 
 const Home = React.memo(({ navigation }) => {
   const memoizedState = useSelector((state) => state.myStateIsRemembered),
     nav = useSelector((state) => state.normalState.navigate),
     allData = memoizedState.rememberMySets,
     dispatch = useDispatch();
-
-  // console.log(memoizedState);
 
   useEffect(() => {
     if (!nav) return;
@@ -57,28 +54,28 @@ const Home = React.memo(({ navigation }) => {
       >
         start building your outfit
       </Button>
+      <Paragraph>Completed Sets {allData.length / 3}</Paragraph>
+      <Paragraph>Status: </Paragraph>
       <Card.Title title="latest items" />
-      <ScrollView style={{ width: "100%", height: "90%" }}>
-        <List.Section title="your sets">
-          {allData.length ? (
-            <List.Accordion
-              title="set"
-              left={(props) => <List.Icon {...props} icon="folder" />}
-            >
-              <View style={{ width: "100%", height: "78%" }}>
-                <FlatList
-                  data={allData}
-                  keyExtractor={({ id }, index) => id}
-                  renderItem={({ item }) => <Items itm={item} />}
-                />
-                <Button style={styles.btns} mode="contained" onPress={() => {}}>
-                  Share
-                </Button>
-              </View>
-            </List.Accordion>
-          ) : null}
-        </List.Section>
-      </ScrollView>
+      <DataTable.Header>
+        <DataTable.Title>Brand</DataTable.Title>
+        <DataTable.Title>Type</DataTable.Title>
+        <DataTable.Title>Size</DataTable.Title>
+        <DataTable.Title>Color</DataTable.Title>
+        <DataTable.Title>Time</DataTable.Title>
+      </DataTable.Header>
+      {allData.length ? (
+        <View style={{ width: "100%", height: "65%" }}>
+          <FlatList
+            data={allData}
+            keyExtractor={({ id }, index) => id + Math.random(index)}
+            renderItem={({ item }) => <Items itm={item} />}
+          />
+          <Button style={styles.btns} mode="contained" onPress={() => {}}>
+            Share
+          </Button>
+        </View>
+      ) : null}
       <Button
         style={styles.btnsLong}
         mode="contained"

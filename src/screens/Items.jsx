@@ -64,9 +64,17 @@ export default Items = ({ itm }) => {
     hideModal = () => setVisible(false),
     dispatch = useDispatch(),
     AddData = () => {
-      if (!selectedColor || !rndImg || !id || !brand || !name || !selectedSize)
+      if (
+        !selectedColor ||
+        !rndImg ||
+        !id ||
+        !brand ||
+        !name ||
+        !selectedSize
+      ) {
         Alert.alert("Ops.. you missed some part please choose the missing");
-      else {
+        return;
+      } else {
         const body = {
           brand,
           colors: selectedColor,
@@ -78,13 +86,9 @@ export default Items = ({ itm }) => {
         };
         dispatch(dispatchType(type, body));
         dispatch(set_navigation(navigateType(type)));
-      }
-      if (
-        rememberMyPants.brand &&
-        rememberMyShoes.brand &&
-        rememberMyShirts.brand
-      ) {
-        dispatch(set_show_finished_btn(true));
+        if (rememberMyPants && rememberMyShoes && rememberMyShirts) {
+          dispatch(set_show_finished_btn(true));
+        }
       }
     };
   useEffect(() => {

@@ -4,8 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   Button,
   Card,
-  Badge,
-  List,
   DataTable,
   Paragraph,
 } from "react-native-paper";
@@ -71,7 +69,7 @@ const Home = React.memo(({ navigation }) => {
             keyExtractor={({ id }, index) => id + Math.random(index)}
             renderItem={({ item }) => <Items itm={item} />}
           />
-          <Button style={styles.btns} mode="contained" onPress={() => {}}>
+          <Button style={styles.btns} mode="contained" onPress={() => { }}>
             Share
           </Button>
         </View>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FlatList, View, StyleSheet } from "react-native";
 import { ProgressBar, Colors } from "react-native-paper";
+import { useSelector } from "react-redux";
 import Items from "../screens/Items";
 
 export default GetMeData = ({ type }) => {
@@ -8,32 +9,33 @@ export default GetMeData = ({ type }) => {
     [shoes, setShoes] = useState([]),
     [pants, setPants] = useState([]),
     [shirts, setShirts] = useState([]),
-    url = `http://www.mocky.io/v2/5e3940013200005e00ddf87e?mocky-delay=600ms`;
+    url = `http://www.mocky.io/v2/5e3940013200005e00ddf87e?mocky-delay=600ms`,
+    searchStore = useSelector((state) => state.normalState.search);
 
   const getData = async () => {
-      try {
-        const response = await fetch(url),
-          data = await response.json();
-        data.results.map((d) => {
-          switch (d.type) {
-            case "shoes":
-              setShoes((shoes) => [...shoes, d]);
-              break;
-            case "pants":
-              setPants((pants) => [...pants, d]);
-              break;
-            case "shirt":
-              setShirts((shirts) => [...shirts, d]);
-              break;
-            default:
-          }
-        });
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    },
+    try {
+      const response = await fetch(url),
+        data = await response.json();
+      data.results.map((d) => {
+        switch (d.type) {
+          case "shoes":
+            setShoes((shoes) => [...shoes, d]);
+            break;
+          case "pants":
+            setPants((pants) => [...pants, d]);
+            break;
+          case "shirt":
+            setShirts((shirts) => [...shirts, d]);
+            break;
+          default:
+        }
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  },
     typeChanger = (type) => {
       switch (type) {
         case "shoes":
@@ -52,6 +54,13 @@ export default GetMeData = ({ type }) => {
     getData();
   }, []);
 
+  const filter = () => {
+    return typeChanger(type).filter(o =>
+      Object.keys(o).some(k => o[k].toLowerCase().includes(searchStore.toLowerCase())));
+  }
+
+  console.log(typeChanger(type))
+
   return (
     <View style={{ flex: 1, padding: 24 }}>
       {isLoading ? (
@@ -60,7 +69,7 @@ export default GetMeData = ({ type }) => {
         <>
           <FlatList
             data={typeChanger(type)}
-            keyExtractor={({ id }, index) => id.toString() + index}
+            keyExtractor={({ id }, index) => (id + index).toString()}
             renderItem={({ item }) => <Items itm={item} />}
           />
         </>

@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import GetMeData from "../service/GetMeData";
 import { Button } from "react-native-paper";
 import { set_remembered_sets, set_show_finished_btn } from "../../redux/store";
+import Search from "./Search";
 
 const Shirt = ({ navigation }) => {
   const memoizedState = useSelector((state) => state.myStateIsRemembered),
@@ -25,6 +26,7 @@ const Shirt = ({ navigation }) => {
   console.log(newData);
   return (
     <View style={{ flex: 1 }}>
+      <Search />
       <GetMeData type={"shirts"} />
       {showBtn ? (
         <Button

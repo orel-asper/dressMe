@@ -57,14 +57,21 @@ export default Items = ({ itm }) => {
     memoizedState = useSelector((state) => state.myStateIsRemembered),
     { rememberMyPants, rememberMyShoes, rememberMyShirts } = memoizedState,
     selectedSize = useSelector((state) => state.normalState.selectedSize),
-    [selectedColor, setSelectedColor] = useState(),
+    [selectedColor, setSelectedColor] = useState(""),
     [visible, setVisible] = useState(false),
     [rndImg, setRndImg] = useState(),
     showModal = () => setVisible(true),
     hideModal = () => setVisible(false),
     dispatch = useDispatch(),
     AddData = () => {
-      if (!selectedColor || !rndImg || !id || !brand || !name || !selectedSize) {
+      if (
+        !selectedColor ||
+        !rndImg ||
+        !id ||
+        !brand ||
+        !name ||
+        !selectedSize
+      ) {
         Alert.alert("Ops.. you missed some part please choose the missing");
         return;
       } else {
@@ -79,11 +86,10 @@ export default Items = ({ itm }) => {
         };
         dispatch(dispatchType(type, body));
         dispatch(set_navigation(navigateType(type)));
-        if (rememberMyPants && rememberMyShoes && rememberMyShirts) {
-          dispatch(set_show_finished_btn(true));
-        }
+        setSelectedColor("");
       }
     };
+
   useEffect(() => {
     setRndImg(RandomImg(type));
   }, []);

@@ -5,15 +5,15 @@ import "core-js/es6/symbol";
 import "core-js/fn/symbol/iterator";
 
 let normaState = {
-  selectedSize: "",
-  navigate: "",
-  showBtn: false,
-  search: '',
-},
+    selectedSize: "",
+    navigate: "",
+    showBtn: false,
+    search: "",
+  },
   memoizedState = {
-    rememberMyShirts: [],
-    rememberMyPants: [],
-    rememberMyShoes: [],
+    rememberMyShirts: [undefined],
+    rememberMyPants: [undefined],
+    rememberMyShoes: [undefined],
     rememberMySets: [],
   },
   SET_SELECTED_SIZE = "SET_SELECTED_SIZE",
@@ -93,9 +93,9 @@ const normalState = (state = normaState, { type, payload }) => {
 };
 
 const reducers = {
-  myStateIsRemembered,
-  normalState,
-},
+    myStateIsRemembered,
+    normalState,
+  },
   rememberedKeys = ["myStateIsRemembered"]; // 'myStateIsForgotten' will be forgotten, as it's not in this list
 
 export const store = createStore(

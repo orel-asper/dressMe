@@ -2,7 +2,13 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { Button, Paragraph } from "react-native-paper";
-import { set_clear_remembered, set_show_finished_btn } from "../../redux/store";
+import {
+  set_clear_all,
+  set_clear_remembered,
+  set_selected_size,
+  set_show_finished_btn,
+} from "../../redux/store";
+import useTimeStamp from "../hooks/useTimeStamp";
 
 const Home = React.memo(({ navigation }) => {
   const memoizedState = useSelector((state) => state.myStateIsRemembered),
@@ -12,21 +18,22 @@ const Home = React.memo(({ navigation }) => {
     { rememberMyPants, rememberMyShoes, rememberMyShirts } = memoizedState,
     dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   if (!nav) return;
-  //   navigation.navigate(nav);
-  // }, [nav]);
+  useEffect(() => {
+    if (!nav) return;
+    navigation.navigate(nav);
+  }, [nav]);
 
   const finishedBtn = () => {
-    dispatch(set_clear_remembered([]));
+    dispatch(set_clear_remembered([undefined]));
+    dispatch(set_selected_size(""));
     navigation.navigate(" ");
   };
 
   useEffect(() => {
     if (
-      rememberMyPants.brand != undefined &&
-      rememberMyShoes.brand != undefined &&
-      rememberMyShirts.brand != undefined
+      rememberMyPants != undefined &&
+      rememberMyShoes != undefined &&
+      rememberMyShirts != undefined
     ) {
       dispatch(set_show_finished_btn(true));
     } else dispatch(set_show_finished_btn(false));
@@ -35,13 +42,13 @@ const Home = React.memo(({ navigation }) => {
   const myStatus = () => {
     let num = 0,
       finished = "";
-    if (rememberMyPants.brand != undefined) {
+    if (rememberMyPants != undefined) {
       (num += 1), (finished += "Pants , ");
     }
-    if (rememberMyShoes.brand != undefined) {
+    if (rememberMyShoes != undefined) {
       (num += 1), (finished += "Shoes , ");
     }
-    if (rememberMyShirts.brand != undefined) {
+    if (rememberMyShirts != undefined) {
       (num += 1), (finished += "Shirt , ");
     }
 
@@ -52,7 +59,13 @@ const Home = React.memo(({ navigation }) => {
     <View style={styles.container}>
       <Paragraph>Completed Sets {allData.length / 3}</Paragraph>
       <Paragraph>Status:{myStatus()} </Paragraph>
-
+      {/* <Button
+        style={[styles.btnsLong, { backgroundColor: "red" }]}
+        mode="contained"
+        onPress={() => dispatch(set_clear_all([]))}
+      >
+        clear data
+      </Button> */}
       {showBtn ? (
         <Button style={styles.btnsLong} mode="contained" onPress={finishedBtn}>
           finish

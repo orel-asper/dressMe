@@ -21,9 +21,7 @@ const Pants = ({ navigation }) => {
       navigation.navigate("Dress Me");
     }
   };
-  1;
 
-  console.log(newData);
   return (
     <View style={{ flex: 1 }}>
       <Search />

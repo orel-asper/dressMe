@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FlatList, View, StyleSheet } from "react-native";
-import { ProgressBar, Colors } from "react-native-paper";
+import { ProgressBar, Colors, Title } from "react-native-paper";
 import { useSelector } from "react-redux";
 import Items from "../screens/Items";
 
@@ -69,6 +69,7 @@ export default GetMeData = ({ type }) => {
         <ProgressBar progress={1} color={Colors.red800} />
       ) : (
         <>
+          <Title> Found {typeChanger(type).length} Items</Title>
           <FlatList
             data={filterByValue(typeChanger(type), searchStore)}
             keyExtractor={({ id }, index) => (id + index).toString()}

@@ -3,15 +3,16 @@ import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import { rememberReducer, rememberEnhancer } from "redux-remember";
 import "core-js/es6/symbol";
 import "core-js/fn/symbol/iterator";
+import useTimeStamp from "../src/hooks/useTimeStamp";
 
 let normaState = {
-  selectedSize: "",
-  navigate: "",
-  showBtn: false,
-  search: "",
-  startTime: "",
-  endTime: "",
-},
+    selectedSize: "",
+    navigate: "",
+    showBtn: false,
+    search: "",
+    startTime: useTimeStamp(),
+    endTime: useTimeStamp(),
+  },
   memoizedState = {
     rememberMyShirts: [],
     rememberMyPants: [],
@@ -107,9 +108,9 @@ const normalState = (state = normaState, { type, payload }) => {
 };
 
 const reducers = {
-  myStateIsRemembered,
-  normalState,
-},
+    myStateIsRemembered,
+    normalState,
+  },
   rememberedKeys = ["myStateIsRemembered"]; // 'myStateIsForgotten' will be forgotten, as it's not in this list
 
 export const store = createStore(

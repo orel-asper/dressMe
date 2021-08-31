@@ -9,7 +9,6 @@ import {
   set_remembered_pants,
   set_remembered_shirts,
   set_remembered_shoes,
-  set_endtime
 } from "../../redux/store";
 
 const RandomImg = (type) => {
@@ -85,14 +84,12 @@ export default Items = ({ itm }) => {
           rndImg,
           type,
           startTime,
-          endTime,
         };
         dispatch(dispatchType(type, body));
         dispatch(set_navigation(navigateType(type)));
-        navigateType(type) === 'Dress Me' && dispatch(set_endtime(useTimeStamp()));
         setSelectedColor("");
       }
-    }
+    };
 
   useEffect(() => {
     setRndImg(RandomImg(type));
@@ -100,7 +97,12 @@ export default Items = ({ itm }) => {
 
   return (
     <>
-      <GetModal visible={visible} hideModal={hideModal} sizes={sizes} AddData={AddData} />
+      <GetModal
+        visible={visible}
+        hideModal={hideModal}
+        sizes={sizes}
+        AddData={AddData}
+      />
       <Card style={styles.cards}>
         <Card.Title title={brand.toUpperCase()} subtitle={name.toUpperCase()} />
         <Card.Content></Card.Content>
@@ -120,13 +122,6 @@ export default Items = ({ itm }) => {
           ))}
         </View>
         <Card.Actions>
-          <Button
-            style={styles.btns}
-            mode="contained"
-            onPress={() => AddData()}
-          >
-            Add
-          </Button>
           <Button
             style={styles.btns}
             mode="contained"

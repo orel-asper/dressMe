@@ -1,4 +1,4 @@
-import React, { useEffet, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { useDispatch } from "react-redux";
 import { Modal, Portal, Text, Button, RadioButton } from "react-native-paper";
@@ -6,13 +6,17 @@ import { set_selected_size } from "../../redux/store";
 
 const GetModal = ({ visible, hideModal, sizes, AddData }) => {
   const [checked, setChecked] = useState(),
-    [btns, setBtns] = useState(""),
+    [S, setS] = useState(""),
     containerStyle = { backgroundColor: "white", padding: 20 },
     dispatch = useDispatch(),
-    onSelect = (size) => {
-      dispatch(set_selected_size(size));
+    onSelect = () => {
       hideModal();
+      setChecked();
     };
+
+  useEffect(() => {
+    dispatch(set_selected_size(S));
+  }, [S]);
 
   return (
     <Portal>
@@ -31,25 +35,21 @@ const GetModal = ({ visible, hideModal, sizes, AddData }) => {
                 status={checked === i ? "checked" : "unchecked"}
                 onPress={() => {
                   setChecked(i);
-                  setBtns(size);
+                  setS(size);
                 }}
               />
             </View>
           ))}
         </View>
-        <Button
-          style={styles.btns}
-          mode="contained"
-          onPress={() => onSelect(btns)}
-        >
+        <Button style={styles.btns} mode="contained" onPress={() => onSelect()}>
           close
         </Button>
         <Button
           style={styles.btns}
           mode="contained"
           onPress={() => {
-            AddData()
-            onSelect(btns)
+            onSelect();
+            AddData();
           }}
         >
           Add

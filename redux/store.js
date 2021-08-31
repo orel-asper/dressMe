@@ -5,18 +5,22 @@ import "core-js/es6/symbol";
 import "core-js/fn/symbol/iterator";
 
 let normaState = {
-    selectedSize: "",
-    navigate: "",
-    showBtn: false,
-    search: "",
-  },
+  selectedSize: "",
+  navigate: "",
+  showBtn: false,
+  search: "",
+  startTime: "",
+  endTime: "",
+},
   memoizedState = {
-    rememberMyShirts: [undefined],
-    rememberMyPants: [undefined],
-    rememberMyShoes: [undefined],
+    rememberMyShirts: [],
+    rememberMyPants: [],
+    rememberMyShoes: [],
     rememberMySets: [],
   },
   SET_SELECTED_SIZE = "SET_SELECTED_SIZE",
+  SET_STSRT_TIME = "SET_STSRT_TIME",
+  SET_ENDTIME = "SET_ENDTIME",
   SET_NAVIGATION = "SET_NAVIGATION",
   SET_REMEMBERED_SHIRTS = "SET_REMEMBERED_SHIRTS",
   SET_REMEMBERED_PANTS = "SET_REMEMBERED_PANTS",
@@ -87,15 +91,25 @@ const normalState = (state = normaState, { type, payload }) => {
         ...state,
         search: payload,
       };
+    case SET_STSRT_TIME:
+      return {
+        ...state,
+        startTime: payload,
+      };
+    case SET_ENDTIME:
+      return {
+        ...state,
+        endTime: payload,
+      };
     default:
       return state;
   }
 };
 
 const reducers = {
-    myStateIsRemembered,
-    normalState,
-  },
+  myStateIsRemembered,
+  normalState,
+},
   rememberedKeys = ["myStateIsRemembered"]; // 'myStateIsForgotten' will be forgotten, as it's not in this list
 
 export const store = createStore(
@@ -125,6 +139,14 @@ export const set_show_finished_btn = (value) => ({
 });
 export const set_search = (value) => ({
   type: SET_SEARCH,
+  payload: value,
+});
+export const set_start_time = (value) => ({
+  type: SET_STSRT_TIME,
+  payload: value,
+});
+export const set_endtime = (value) => ({
+  type: SET_ENDTIME,
   payload: value,
 });
 //RememberME

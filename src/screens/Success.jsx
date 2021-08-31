@@ -5,7 +5,7 @@ import { Button, Card, DataTable, Paragraph, Text } from "react-native-paper";
 import { set_clear_all } from "../../redux/store";
 
 const Items = ({ itm }) => {
-  const { brand, colors, id, name, sizes, type, rndImg } = itm;
+  const { brand, colors, id, name, sizes, type, rndImg, startTime, endTime } = itm;
   return (
     <>
       <DataTable>
@@ -14,7 +14,8 @@ const Items = ({ itm }) => {
           <DataTable.Cell>{name}</DataTable.Cell>
           <DataTable.Cell>{sizes}</DataTable.Cell>
           <DataTable.Cell>{colors}</DataTable.Cell>
-          <DataTable.Cell>{rndImg}</DataTable.Cell>
+          <DataTable.Title>{startTime}</DataTable.Title>
+          <DataTable.Title>{endTime}</DataTable.Title>
         </DataTable.Row>
       </DataTable>
     </>
@@ -66,7 +67,8 @@ const Success = React.memo(({ navigation }) => {
         <DataTable.Title>Type</DataTable.Title>
         <DataTable.Title>Size</DataTable.Title>
         <DataTable.Title>Color</DataTable.Title>
-        <DataTable.Title>Time</DataTable.Title>
+        <DataTable.Title>started</DataTable.Title>
+        <DataTable.Title>ended</DataTable.Title>
       </DataTable.Header>
       {allData.length ? (
         <View style={{ width: "100%", height: "65%" }}>

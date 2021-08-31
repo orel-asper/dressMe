@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { Modal, Portal, Text, Button, RadioButton } from "react-native-paper";
 import { set_selected_size } from "../../redux/store";
 
-const GetModal = ({ visible, hideModal, sizes }) => {
+const GetModal = ({ visible, hideModal, sizes, AddData }) => {
   const [checked, setChecked] = useState(),
     [btns, setBtns] = useState(""),
     containerStyle = { backgroundColor: "white", padding: 20 },
@@ -42,7 +42,17 @@ const GetModal = ({ visible, hideModal, sizes }) => {
           mode="contained"
           onPress={() => onSelect(btns)}
         >
-          CONTINUE
+          close
+        </Button>
+        <Button
+          style={styles.btns}
+          mode="contained"
+          onPress={() => {
+            AddData()
+            onSelect(btns)
+          }}
+        >
+          Add
         </Button>
       </Modal>
     </Portal>

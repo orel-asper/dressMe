@@ -9,7 +9,7 @@ import {
   set_remembered_pants,
   set_remembered_shirts,
   set_remembered_shoes,
-  set_show_finished_btn,
+  set_endtime
 } from "../../redux/store";
 
 const RandomImg = (type) => {
@@ -45,8 +45,8 @@ const navigateType = (type) => {
       return "Pants";
     case "pants":
       return "Shoes";
-    // case "shoes":
-    //   return "Dress Me";
+    case "shoes":
+      return "Dress Me";
     default:
       return;
   }
@@ -55,8 +55,9 @@ const navigateType = (type) => {
 export default Items = ({ itm }) => {
   const { brand, colors, id, name, sizes, type } = itm,
     memoizedState = useSelector((state) => state.myStateIsRemembered),
-    { rememberMyPants, rememberMyShoes, rememberMyShirts } = memoizedState,
     selectedSize = useSelector((state) => state.normalState.selectedSize),
+    startTime = useSelector((state) => state.normalState.startTime),
+    endTime = useSelector((state) => state.normalState.endTime),
     [selectedColor, setSelectedColor] = useState(""),
     [visible, setVisible] = useState(false),
     [rndImg, setRndImg] = useState(),
@@ -83,12 +84,15 @@ export default Items = ({ itm }) => {
           sizes: selectedSize,
           rndImg,
           type,
+          startTime,
+          endTime,
         };
         dispatch(dispatchType(type, body));
         dispatch(set_navigation(navigateType(type)));
+        navigateType(type) === 'Dress Me' && dispatch(set_endtime(useTimeStamp()));
         setSelectedColor("");
       }
-    };
+    }
 
   useEffect(() => {
     setRndImg(RandomImg(type));
@@ -96,7 +100,7 @@ export default Items = ({ itm }) => {
 
   return (
     <>
-      <GetModal visible={visible} hideModal={hideModal} sizes={sizes} />
+      <GetModal visible={visible} hideModal={hideModal} sizes={sizes} AddData={AddData} />
       <Card style={styles.cards}>
         <Card.Title title={brand.toUpperCase()} subtitle={name.toUpperCase()} />
         <Card.Content></Card.Content>

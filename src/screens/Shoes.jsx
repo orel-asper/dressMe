@@ -3,19 +3,26 @@ import { StyleSheet, Text, View } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import GetMeData from "../service/GetMeData";
 import { Button } from "react-native-paper";
-import { set_remembered_sets } from "../../redux/store";
+import { set_remembered_sets, set_start_time, set_endtime } from "../../redux/store";
 import Search from "./Search";
 
 const Shoes = ({ navigation }) => {
   const memoizedState = useSelector((state) => state.myStateIsRemembered),
+    [focus, setFocused] = useState(false),
     { rememberMyPants, rememberMyShoes, rememberMyShirts, rememberMySets } =
       memoizedState,
     newData = [rememberMyPants, rememberMyShoes, rememberMyShirts],
     dispatch = useDispatch();
+  navigation.addListener('focus', () => {
+    setFocused(!focus)
+  });
+
+  useEffect(() => { dispatch(set_start_time(useTimeStamp())) }, [focus])
 
   const FinishChoosing = async () => {
     if (typeof newData !== "undefined" && newData.length > 0) {
       dispatch(set_remembered_sets(rememberMySets.concat(newData)));
+      dispatch(set_endtime(useTimeStamp()))
       navigation.navigate("Dress Me");
     }
   };
@@ -24,9 +31,9 @@ const Shoes = ({ navigation }) => {
     <View style={{ flex: 1 }}>
       <Search />
       <GetMeData type={"shoes"} />
-      <Button style={styles.btnsLong} mode="contained" onPress={FinishChoosing}>
+      {/* <Button style={styles.btnsLong} mode="contained" onPress={FinishChoosing}>
         Continue
-      </Button>
+      </Button> */}
     </View>
   );
 };

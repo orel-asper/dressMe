@@ -7,6 +7,8 @@ import {
   set_clear_remembered,
   set_selected_size,
   set_show_finished_btn,
+  set_remembered_sets,
+  set_endtime,
 } from "../../redux/store";
 import useTimeStamp from "../hooks/useTimeStamp";
 
@@ -14,8 +16,9 @@ const Home = React.memo(({ navigation }) => {
   const memoizedState = useSelector((state) => state.myStateIsRemembered),
     showBtn = useSelector((state) => state.normalState.showBtn),
     nav = useSelector((state) => state.normalState.navigate),
-    allData = memoizedState.rememberMySets,
-    { rememberMyPants, rememberMyShoes, rememberMyShirts } = memoizedState,
+    { rememberMyPants, rememberMyShoes, rememberMyShirts, rememberMySets } = memoizedState,
+    newData = [rememberMyPants, rememberMyShoes, rememberMyShirts],
+    allData = rememberMySets,
     dispatch = useDispatch();
 
   useEffect(() => {
@@ -23,12 +26,16 @@ const Home = React.memo(({ navigation }) => {
     navigation.navigate(nav);
   }, [nav]);
 
+
   const finishedBtn = () => {
+    if (typeof newData !== "undefined" && newData.length > 0) {
+      dispatch(set_remembered_sets(rememberMySets.concat(newData)));
+    }
     dispatch(set_clear_remembered([undefined]));
     dispatch(set_selected_size(""));
     navigation.navigate(" ");
   };
-
+  console.log(allData)
   useEffect(() => {
     if (
       rememberMyPants != undefined &&
@@ -59,13 +66,13 @@ const Home = React.memo(({ navigation }) => {
     <View style={styles.container}>
       <Paragraph>Completed Sets {allData.length / 3}</Paragraph>
       <Paragraph>Status:{myStatus()} </Paragraph>
-      {/* <Button
+      <Button
         style={[styles.btnsLong, { backgroundColor: "red" }]}
         mode="contained"
         onPress={() => dispatch(set_clear_all([]))}
       >
         clear data
-      </Button> */}
+      </Button>
       {showBtn ? (
         <Button style={styles.btnsLong} mode="contained" onPress={finishedBtn}>
           finish

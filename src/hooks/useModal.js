@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { Modal, Portal, Text, Button, RadioButton } from "react-native-paper";
 import { set_selected_size } from "../../redux/store";
 
-const GetModal = ({ visible, hideModal, sizes, AddData }) => {
+const GetModal = ({ visible, hideModal, sizes, AddData, setSelectedColor }) => {
   const [checked, setChecked] = useState(),
     [S, setS] = useState(""),
     containerStyle = { backgroundColor: "white", padding: 20 },
@@ -50,6 +50,7 @@ const GetModal = ({ visible, hideModal, sizes, AddData }) => {
           onPress={() => {
             onSelect();
             AddData();
+            setSelectedColor();
           }}
         >
           Add

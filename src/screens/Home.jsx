@@ -68,13 +68,6 @@ const Home = React.memo(({ navigation }) => {
     <View style={styles.container}>
       <Paragraph>Completed Sets {allData.length / 3}</Paragraph>
       <Paragraph>Status:{myStatus()} </Paragraph>
-      {/* <Button
-        style={[styles.btnsLong, { backgroundColor: "red" }]}
-        mode="contained"
-        onPress={() => dispatch(set_clear_all([]))}
-      >
-        clear data
-      </Button> */}
       {showBtn ? (
         <Button style={styles.btnsLong} mode="contained" onPress={finishedBtn}>
           finish

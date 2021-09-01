@@ -87,7 +87,6 @@ export default Items = ({ itm }) => {
         };
         dispatch(dispatchType(type, body));
         dispatch(set_navigation(navigateType(type)));
-        setSelectedColor("");
       }
     };
 
@@ -102,6 +101,7 @@ export default Items = ({ itm }) => {
         hideModal={hideModal}
         sizes={sizes}
         AddData={AddData}
+        setSelectedColor={setSelectedColor}
       />
       <Card style={styles.cards}>
         <Card.Title title={brand.toUpperCase()} subtitle={name.toUpperCase()} />
